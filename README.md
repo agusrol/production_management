@@ -17,6 +17,7 @@ archivo composer.json.
 Por último, para ver que esté todo piola corré el comando "php artisan serve" y
 debería levantarte la aplicación, la cuál podés abrirla con 
 "localhost:8080".
+También instalar el postgresql según la versión indicada.
 
 # Versiones
 
