@@ -14,7 +14,7 @@ class Task extends Model
         return $this->hasMany(TimeEntry::class, 'task_id');
     }
 
-    public function employees(): BelongsToMany
+    public function employees(): BelongsToMany //checked 14.03.2025.1220
     {
         return $this->belongsToMany(Employee::class, 'employee_task', 'task_id', 'employee_id');
     }

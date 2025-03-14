@@ -10,7 +10,7 @@ class Product extends Model
     
     protected $fillable = ['codigo', 'nombre', 'descripcion'];
 
-    public function tasks(): BelongsToMany 
+    public function tasks(): BelongsToMany //checked 14.03.2025.1226
     {
         return $this->belongsToMany(Task::class, 'product_task', 'product_id', 'task_id');
     }
