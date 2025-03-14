@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('batches', function (Blueprint $table) {
+        Schema::create('batches', function (Blueprint $table) { //checked 14.03.2025.1215
             $table->id(); // Auto-increment primary key
             $table->string('nro_lote', 50)->unique(); // Lot number (unique)
             $table->foreignId('product_id')->constrained()->onDelete('cascade'); // Mandatory

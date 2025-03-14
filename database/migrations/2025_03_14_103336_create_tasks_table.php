@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {  //checked 14.03.2025.1219
             $table->id(''); // Auto-increment primary key
             $table->string('nombre', 100);
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_fin')->nullable();
             $table->boolean('detencion')->default(false);
-            $table->foreignId('product_id')->constrained()->onDelete('cascade'); // Foreign Key
             $table->timestamps(); // Adds created_at & updated_at
         });
     }

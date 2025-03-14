@@ -10,7 +10,7 @@ class Batch extends Model
 
     protected $fillable = ['nro_lote'];
 
-    public function product(): BelongsTo
+    public function product(): BelongsTo //checked 14.03.2025.1214
     {
         return $this->belongsTo(Product::class, 'product_id');
     }

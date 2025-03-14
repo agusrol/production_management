@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('products', function (Blueprint $table) { //checked 14.03.2025.1217
             $table->id();
             $table->timestamps();
             $table->string('codigo', 50)->unique();

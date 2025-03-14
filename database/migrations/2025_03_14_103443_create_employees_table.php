@@ -11,8 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employees', function (Blueprint $table) {
+        Schema::create('employees', function (Blueprint $table) {   //checked 14.03.2025.1218
             $table->id(); // Auto-increment primary key (id)
+            $table->foreignId('user_id')->unique()->constrained()->onDelete('cascade'); // Mandatory
             $table->string('nombre', 100);
             $table->string('apellido', 100);
             $table->timestamps(); // Adds created_at & updated_at
