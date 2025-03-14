@@ -3,13 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class TimeEntry extends Model
 {
 
+    use HasFactory;
+
     protected $table = 'time_entries'; // Custom table name
 
-    protected $fillable = ['fecha_inicio', 'fecha_fin'];
+    protected $fillable = ['fecha_inicio', 'fecha_fin', 'task_id', 'employee_id'];
+
 
 
     public function task() : BelongsTo{ //checked 14.03.2025.1205

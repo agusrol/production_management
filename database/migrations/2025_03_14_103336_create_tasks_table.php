@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {  //checked 14.03.2025.1219
-            $table->id(''); // Auto-increment primary key
+            $table->id(); // Auto-increment primary key
             $table->string('nombre', 100);
             $table->dateTime('fecha_inicio');
             $table->dateTime('fecha_fin')->nullable();
