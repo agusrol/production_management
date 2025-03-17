@@ -4,12 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Batch extends Model
 {
     use HasFactory;
 
-    protected $table = 'lotes';  // Custom table name
+    protected $table = 'batches';  // Custom table name
 
     protected $fillable = ['nro_lote', 'product_id'];
 

@@ -4,13 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
     use HasFactory;
 
-    protected $table = 'productos'; 
-    
+    protected $table = 'products';
+
     protected $fillable = ['codigo', 'nombre', 'descripcion'];
 
     public function tasks(): BelongsToMany //checked 14.03.2025.1226

@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Task extends Model
 {
     use HasFactory;
 
-    protected $table = 'tareas';  // Custom table name
+    protected $table = 'tasks';  // Custom table name
 
     protected $fillable = ['nombre', 'fecha_inicio', 'fecha_fin'];
 
