@@ -43,4 +43,7 @@
         </table>
     @endif
 </div>
+
+<a href="{{ route('tasks.csv') }}" class="btn btn-success">Download CSV</a>
+
 @endsection

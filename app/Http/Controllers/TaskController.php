@@ -1,11 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\Employee;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 
 class TaskController extends Controller
 {
@@ -19,41 +21,76 @@ class TaskController extends Controller
 
     public function store(Request $request)
     {
+        // Log the request data to see if 'nombre' is missing
+        \Log::info('Received Request:', $request->all());
+    
+        // Validate input
         $validated = $request->validate([
-            'nombre' => 'required|string|max:255', // Use 'nombre' instead of 'name'
-            'descripcion' => 'nullable|string', // Match the database column
-            'employees' => 'nullable|array',
-            'employees.*' => 'exists:employees,id',
-            'product_id' => 'nullable|exists:products,id',
+            'nombre' => 'required|string|max:255',
+            'descripcion' => 'nullable|string',
+            'fecha_inicio' => 'nullable|date',
+            'fecha_fin' => 'nullable|date',
         ]);
     
-        // Debug: Check what is received
-        dd($validated); 
+        \Log::info('Validated Data:', $validated); // Log validated data
     
-        // Create the task with 'nombre' instead of 'name'
-        $task = Task::create([
-            'nombre' => $validated['nombre'],  
-            'descripcion' => $validated['descripcion'] ?? null,
-        ]);
+        try {
+            $task = Task::create([
+                'nombre' => $validated['nombre'],  
+                'descripcion' => $validated['descripcion'] ?? null,
+                'fecha_inicio' => $validated['fecha_inicio'] ?? null,
+                'fecha_fin' => $validated['fecha_fin'] ?? null,
+            ]);
     
-        // Attach employees if provided
-        if (!empty($validated['employees'])) {
-            $task->employees()->attach($validated['employees']);
+            \Log::info('Task Created:', $task->toArray()); // Log successful insert
+    
+        } catch (\Exception $e) {
+            \Log::error('Error Saving Task: ' . $e->getMessage()); // Log error
+            return back()->with('error', 'Task could not be saved.');
         }
     
-        // Attach product if selected
-        if (!empty($validated['product_id'])) {
-            $task->products()->attach($validated['product_id']);
-        }
-    
-        return redirect()->route('tasks.create')->with('success', 'Tarea creada correctamente.');
+        return redirect()->route('tasks.create')->with('success', 'Task created successfully.');
     }
+
     
     public function index()
     {
-        $tasks = Task::with(['employees', 'products'])->get(); // Load related employees and products
-
+        // $tasks = Task::with(['employees', 'products'])->get(); // Load related employees and products
+        $tasks = Task::all(); // Fetch all tasks
         return view('tasks.index', compact('tasks'));
     }
 
+    public function exportCSV()
+    {
+        $tasks = Task::with(['employees', 'products'])->get();
+
+        $response = new StreamedResponse(function () use ($tasks) {
+            $handle = fopen('php://output', 'w');
+
+            // Agregar encabezados
+            fputcsv($handle, ['ID', 'Nombre', 'Descripción', 'Empleados', 'Producto', 'Fecha de Creación']);
+
+            // Agregar datos
+            foreach ($tasks as $task) {
+                $employees = $task->employees->pluck('user.name')->implode(', ');
+                $product = $task->products->first()->nombre ?? 'No Product';
+
+                fputcsv($handle, [
+                    $task->id,
+                    $task->nombre,
+                    $task->descripcion,
+                    $employees,
+                    $product,
+                    $task->created_at->format('Y-m-d H:i')
+                ]);
+            }
+
+            fclose($handle);
+        });
+
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="tasks.csv"');
+
+        return $response;
+    }
 }
