@@ -51,6 +51,9 @@
         </div>
 
         <!-- Submit Button -->
+        <label for="fecha_inicio">Fecha Inicio:</label>
+        <input type="date" name="fecha_inicio" required>
+        <!-- Submit Button -->
         <button type="submit" class="btn btn-primary">Create Task</button>
     </form>
 </div>

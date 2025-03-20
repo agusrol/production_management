@@ -28,7 +28,7 @@ class TaskController extends Controller
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'nullable|string',
-            'fecha_inicio' => 'nullable|date',
+            'fecha_inicio' => 'required|date',  // Now required
             'fecha_fin' => 'nullable|date',
         ]);
     
