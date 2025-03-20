@@ -13,7 +13,7 @@ class Task extends Model
 
     protected $table = 'tasks';  // Custom table name
 
-    protected $fillable = ['nombre', 'descripcion', 'fecha_inicio', 'fecha_fin'];
+    protected $fillable = ['nombre', 'descripcion'];
 
     public function timeEntries(): HasMany {  //checked 14.03.2025.1205
         return $this->hasMany(TimeEntry::class, 'task_id');

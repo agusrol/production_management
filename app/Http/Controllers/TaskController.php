@@ -27,9 +27,7 @@ class TaskController extends Controller
         // Validate input
         $validated = $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'nullable|string',
-            'fecha_inicio' => 'required|date',  // Now required
-            'fecha_fin' => 'nullable|date',
+            'descripcion' => 'nullable|string'
         ]);
     
         \Log::info('Validated Data:', $validated); // Log validated data
@@ -37,9 +35,7 @@ class TaskController extends Controller
         try {
             $task = Task::create([
                 'nombre' => $validated['nombre'],  
-                'descripcion' => $validated['descripcion'] ?? null,
-                'fecha_inicio' => $validated['fecha_inicio'] ?? null,
-                'fecha_fin' => $validated['fecha_fin'] ?? null,
+                'descripcion' => $validated['descripcion'] ?? null
             ]);
     
             \Log::info('Task Created:', $task->toArray()); // Log successful insert

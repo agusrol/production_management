@@ -13,7 +13,7 @@ class TaskFactory extends Factory
     {
         return [
             'nombre' => $this->faker->word(),
-            'fecha_inicio' => $this->faker->dateTimeBetween('-1 month', 'now'),
+            // 'fecha_inicio' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'fecha_fin' => $this->faker->optional()->dateTimeBetween('now', '+1 month'),
         ];
     }
