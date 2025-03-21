@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,33 +8,49 @@ use App\Models\Employee;
 
 class TimeEntryController extends Controller
 {
-    // Mostrar la lista de time_entries
-    public function index()
+        public function index()
     {
-        $timeEntries = TimeEntry::with('task', 'employee')->latest()->get();
-        return view('time_entries.index', compact('timeEntries'));
+        if (!in_array(auth()->user()->role, ['user', 'admin'])) {
+            abort(403);
+        }
+
+        $entries = TimeEntry::with(['task', 'employee'])->latest()->get();
+
+        return view('time_entries.index', compact('entries'));
     }
 
-    // Mostrar formulario para crear un time_entry
     public function create()
     {
+        if (!in_array(auth()->user()->role, ['user', 'admin'])) {
+            abort(403);
+        }
+
         $tasks = Task::all();
         $employees = Employee::all();
+
         return view('time_entries.create', compact('tasks', 'employees'));
     }
 
-    // Guardar el time_entry en la base de datos
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        if (!in_array(auth()->user()->role, ['user', 'admin'])) {
+            abort(403);
+        }
+
+        $request->validate([
             'task_id' => 'required|exists:tasks,id',
             'employee_id' => 'required|exists:employees,id',
             'fecha_inicio' => 'required|date',
             'fecha_fin' => 'required|date|after_or_equal:fecha_inicio',
         ]);
 
-        TimeEntry::create($validated);
+        TimeEntry::create([
+            'task_id' => $request->task_id,
+            'employee_id' => $request->employee_id,
+            'fecha_inicio' => $request->fecha_inicio,
+            'fecha_fin' => $request->fecha_fin,
+        ]);
 
-        return redirect()->route('time_entries.index')->with('success', 'Time Entry added successfully.');
+        return redirect()->route('time_entries.create')->with('success', 'Time entry created.');
     }
 }
